@@ -8,7 +8,7 @@ export interface Track {
   cover: string;
 }
 
-export const songs: Track[] = [
+const justiceAlbum: Track[] = [
   {
     id: 1,
     title: "Neverender",
@@ -23,7 +23,7 @@ export const songs: Track[] = [
     title: "Generator",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 274,
+    duration: 282,
     url: "/music/02 - Justice - Generator.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -32,7 +32,7 @@ export const songs: Track[] = [
     title: "Afterimage",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 293,
+    duration: 245,
     url: "/music/03 - Justice - Afterimage.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -41,7 +41,7 @@ export const songs: Track[] = [
     title: "One Night-All Night",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 301,
+    duration: 276,
     url: "/music/04 - Justice - One Night-All Night.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -50,7 +50,7 @@ export const songs: Track[] = [
     title: "Dear Alan",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 278,
+    duration: 333,
     url: "/music/05 - Justice - Dear Alan.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -59,7 +59,7 @@ export const songs: Track[] = [
     title: "Incognito",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 267,
+    duration: 241,
     url: "/music/06 - Justice - Incognito.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -68,7 +68,7 @@ export const songs: Track[] = [
     title: "Mannequin Love",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 289,
+    duration: 207,
     url: "/music/07 - Justice - Mannequin Love.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -77,7 +77,7 @@ export const songs: Track[] = [
     title: "Moonlight Rendez-vous",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 282,
+    duration: 120,
     url: "/music/08 - Justice - Moonlight Rendez-vous.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -86,7 +86,7 @@ export const songs: Track[] = [
     title: "Explorer",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 304,
+    duration: 249,
     url: "/music/09 - Justice - Explorer.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -95,7 +95,7 @@ export const songs: Track[] = [
     title: "Muscle Memory",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 296,
+    duration: 250,
     url: "/music/10 - Justice - Muscle Memory.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -104,7 +104,7 @@ export const songs: Track[] = [
     title: "Harpy dream",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 264,
+    duration: 28,
     url: "/music/11 - Justice - Harpy dream.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
@@ -122,8 +122,40 @@ export const songs: Track[] = [
     title: "The End",
     artist: "Justice",
     album: "Hyperdrama",
-    duration: 283,
+    duration: 254,
     url: "/music/13 - Justice - The End.mp3",
     cover: "https://f4.bcbits.com/img/a0336734541_16.jpg",
   },
 ];
+
+const otherSongs: Track[] = [
+  {
+    id: 14,
+    title: "Club Party Dance Music",
+    artist: "Tatamusic",
+    duration: 103,
+    url: "/music/tatamusic-club-party-dance-music.mp3",
+    cover: "https://cdn.pixabay.com/audio/2026/02/02/12-59-51-96_200x200.png",
+  },
+  {
+    id: 15,
+    title: "Sport Techno",
+    artist: "Watermello",
+    duration: 110,
+    url: "/music/watermello-sport-techno.mp3",
+    cover: "https://cdn.pixabay.com/audio/2026/01/31/11-40-49-940_200x200.png",
+  },
+  {
+    id: 16,
+    title: "Dance Queen",
+    artist: "White Records",
+    duration: 39,
+    url: "/music/white_records-dance-queen.mp3",
+    cover: "https://cdn.pixabay.com/audio/2025/10/29/07-59-56-955_200x200.jpg",
+  },
+];
+
+export const songs: Track[] =
+  process.env.NODE_ENV === "development"
+    ? [...justiceAlbum, ...otherSongs]
+    : otherSongs;
