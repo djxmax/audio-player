@@ -37,11 +37,28 @@ export default function AudioPlayer({
     }
   }, [isPlaying, track]); // Se redéclenche si isPlaying ou la musique change
 
+  // Restaurer la position de lecture au montage
+  useEffect(() => {
+    if (!audioRef.current || !track) return;
+
+    const restorePosition = sessionStorage.getItem("restorePosition");
+    if (restorePosition) {
+      const position = parseFloat(restorePosition);
+      audioRef.current.currentTime = position;
+      sessionStorage.removeItem("restorePosition");
+    }
+  }, [track]);
+
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       const current =
         (audioRef.current.currentTime / audioRef.current.duration) * 100;
       setProgress(current);
+      // Sauvegarder la position actuelle
+      localStorage.setItem(
+        "currentPosition",
+        String(audioRef.current.currentTime),
+      );
     }
   };
 
@@ -66,19 +83,23 @@ export default function AudioPlayer({
 
       <CardContent className="px-6">
         <div className="flex flex-row items-center gap-4">
-          <div className="flex-1/4">
+          <div className="flex-1 md:flex-1/4">
             <TrackInfo track={track} />
           </div>
-          <div className="flex-1/2 flex flex-col items-center gap-4">
+          <div className="flex-none md:flex-1/2 flex flex-col items-center gap-4">
             <ProgressBar
               progress={progress}
               currentTime={audioRef.current?.currentTime}
               duration={audioRef.current?.duration}
               handleSliderChange={handleSliderChange}
             />
-            <Controls isPlaying={isPlaying} onTogglePlay={onTogglePlay} />
+            <Controls
+              isPlaying={isPlaying}
+              haveTrack={!!track}
+              onTogglePlay={onTogglePlay}
+            />
           </div>
-          <div className="flex-1/4 h-10">
+          <div className="hidden md:flex md:flex-1/4 md:justify-end">
             <SecondaryControls
               volume={volume}
               onVolumeChange={(value) => {

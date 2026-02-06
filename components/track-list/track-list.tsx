@@ -28,10 +28,12 @@ export default function TrackList({
     <div>
       <Table>
         <TableHeader>
-          <TableHead className="w-16">#</TableHead>
-          <TableHead>Title</TableHead>
-          <TableHead>Album</TableHead>
-          <TableHead>Durée</TableHead>
+          <TableRow>
+            <TableHead className="w-16">#</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Album</TableHead>
+            <TableHead>Durée</TableHead>
+          </TableRow>
         </TableHeader>
         <TableBody>
           {tracks.map((track) => (
@@ -40,10 +42,10 @@ export default function TrackList({
               track={track}
               isActive={activeTrackId === track.id}
               isHovered={hoveredTrackId === track.id}
+              onClick={() => onSelect(track)}
               onHoverChange={(isHovered) =>
                 setHoveredTrackId(isHovered ? track.id : undefined)
               }
-              onClick={() => onSelect(track)}
             />
           ))}
         </TableBody>

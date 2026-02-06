@@ -17,7 +17,7 @@ export default function ProgressBar({
   handleSliderChange,
 }: ProgressBarProps) {
   return (
-    <div className="flex flex-row items-center gap-2 w-full">
+    <div className="hidden md:flex flex-row items-center gap-2 w-full">
       <Badge className="text-xs">{formatTime(currentTime)}</Badge>
       <Slider
         value={[progress]}
