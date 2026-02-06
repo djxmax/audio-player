@@ -3,6 +3,7 @@ import { ThemeToggle } from "./theme-toggle";
 import Search from "./search";
 import { Button } from "@/components/ui/button";
 import { PanelLeft } from "lucide-react";
+import { AddSongDialog } from "../upload/add-song-dialog";
 
 export default function Header() {
   return (
@@ -18,6 +19,7 @@ export default function Header() {
             <Search />
           </div>
           <div className="flex-1/4 flex flex-row items-center justify-end gap-4 h-full">
+            <AddSongDialog />
             <ThemeToggle />
           </div>
         </div>
