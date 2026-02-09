@@ -5,6 +5,7 @@ import { Playlist } from "@/data/playlists";
 import { Track } from "@/data/songs";
 import { usePlayerStore } from "@/store/player-store";
 import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
+import { useNavigationStore } from "@/store/navigation-store";
 import TrackList from "@/components/track-list/track-list";
 import PlaylistDetails from "./playlist-details";
 
@@ -15,6 +16,7 @@ interface PlaylistContentProps {
 export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
   const { currentTrack, setCurrentTrack, setIsPlaying } = usePlayerStore();
   const { playlists } = useFetchPlaylists();
+  const { setLibrary, invalidatePlaylists } = useNavigationStore();
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
 
   useEffect(() => {
@@ -47,7 +49,16 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
 
   return (
     <div className="p-6">
-      <PlaylistDetails playlist={playlist} />
+      <PlaylistDetails
+        playlist={playlist}
+        onPlaylistUpdate={(updatedPlaylist) => {
+          setPlaylist(updatedPlaylist);
+        }}
+        onDelete={() => {
+          invalidatePlaylists();
+          setLibrary();
+        }}
+      />
       <TrackList
         tracks={playlist.songs || []}
         onSelect={handleSelectTrack}

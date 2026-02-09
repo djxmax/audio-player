@@ -3,10 +3,14 @@
 import { CheckCircle2, ImageIcon } from "lucide-react";
 import { UploadButton } from "@/lib/updloadthing";
 import { FormData } from "@/hooks/use-add-song";
+import { PlaylistFormData } from "../common/playlist-dialog";
 
 interface CoverUploaderProps {
-  formData: FormData;
-  updateField: (field: keyof FormData, value: any) => void;
+  formData: FormData | PlaylistFormData;
+  updateField: (
+    field: keyof FormData | keyof PlaylistFormData,
+    value: any,
+  ) => void;
 }
 
 export default function CoverUploader({

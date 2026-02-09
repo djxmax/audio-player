@@ -15,14 +15,18 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
 import { useNavigationStore } from "@/store/navigation-store";
+import PlaylistDialog from "@/components/common/playlist-dialog";
 
 export function SidebarPlaylists() {
   const { playlists, loading } = useFetchPlaylists();
   const [isOpen, setIsOpen] = useState(false);
-  const { setSelectedPlaylist, selectedPlaylistId } = useNavigationStore();
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const { setSelectedPlaylist, selectedPlaylistId, invalidatePlaylists } =
+    useNavigationStore();
 
   return (
     <SidebarMenu>
@@ -68,10 +72,30 @@ export function SidebarPlaylists() {
                   <div>Aucune playlist</div>
                 </SidebarMenuSubItem>
               )}
+              <SidebarMenuSubItem>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsCreateDialogOpen(true)}
+                  className="w-full justify-start gap-2 h-8"
+                >
+                  <Plus size={16} />
+                  Nouvelle playlist
+                </Button>
+              </SidebarMenuSubItem>
             </SidebarMenuSub>
           </CollapsibleContent>
         </SidebarMenuItem>
       </Collapsible>
+
+      <PlaylistDialog
+        isOpen={isCreateDialogOpen}
+        onOpenChange={setIsCreateDialogOpen}
+        onSuccess={() => {
+          invalidatePlaylists();
+          setIsCreateDialogOpen(false);
+        }}
+      />
     </SidebarMenu>
   );
 }

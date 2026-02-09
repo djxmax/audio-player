@@ -1,19 +1,48 @@
+import { useState } from "react";
 import { Playlist } from "@/data/playlists";
 import { Edit, Trash2 } from "lucide-react";
 import Cover from "../common/cover";
+import PlaylistDialog from "../common/playlist-dialog";
 import { Button } from "@/components/ui/button";
+import { useDeletePlaylist } from "@/hooks/use-delete-playlist";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface PlaylistDetailsProps {
   playlist: Playlist;
   onEdit?: () => void;
   onDelete?: () => void;
+  onPlaylistUpdate?: (playlist: Playlist) => void;
 }
 
 export default function PlaylistDetails({
   playlist,
   onEdit,
   onDelete,
+  onPlaylistUpdate,
 }: PlaylistDetailsProps) {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { deletePlaylist, loading: isDeleting } = useDeletePlaylist();
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deletePlaylist(String(playlist.id));
+      toast.success("Playlist supprimée");
+      setIsDeleteDialogOpen(false);
+      onDelete?.();
+    } catch (error) {
+      toast.error("Erreur lors de la suppression");
+      console.error("Erreur lors de la suppression:", error);
+    }
+  };
   return (
     <div className="flex gap-6 mb-8 items-start">
       <div className="flex-shrink-0">
@@ -29,7 +58,7 @@ export default function PlaylistDetails({
           <Button
             variant="outline"
             size="sm"
-            onClick={onEdit}
+            onClick={() => setIsEditDialogOpen(true)}
             className="gap-2"
           >
             <Edit size={16} />
@@ -38,7 +67,7 @@ export default function PlaylistDetails({
           <Button
             variant="outline"
             size="sm"
-            onClick={onDelete}
+            onClick={() => setIsDeleteDialogOpen(true)}
             className="gap-2 hover:text-destructive"
           >
             <Trash2 size={16} />
@@ -46,6 +75,43 @@ export default function PlaylistDetails({
           </Button>
         </div>
       </div>
+
+      <PlaylistDialog
+        playlist={playlist}
+        isOpen={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        onSuccess={(updatedPlaylist) => {
+          onPlaylistUpdate?.(updatedPlaylist);
+        }}
+      />
+
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Supprimer la playlist</DialogTitle>
+            <DialogDescription>
+              Êtes-vous sûr de vouloir supprimer "{playlist.name}" ? Cette
+              action est irréversible.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+              disabled={isDeleting}
+            >
+              Annuler
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteConfirm}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Suppression..." : "Supprimer"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

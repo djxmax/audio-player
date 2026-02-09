@@ -21,6 +21,10 @@ export function AddSongDialog() {
   const [open, setOpen] = useState(false);
   const { formData, loading, updateField, handleSave } = useAddSong();
 
+  const handleUpdateField = (field: string, value: any) => {
+    updateField(field as keyof typeof formData, value);
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -42,7 +46,7 @@ export function AddSongDialog() {
           <div className="flex flex-col gap-4 mt-2">
             <MusicUploader formData={formData} updateField={updateField} />
 
-            <CoverUploader formData={formData} updateField={updateField} />
+            <CoverUploader formData={formData} updateField={handleUpdateField} />
           </div>
         </div>
 
