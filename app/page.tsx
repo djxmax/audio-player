@@ -1,60 +1,25 @@
 "use client"; // Obligatoire car on utilise du state
 
-import { useState, useEffect } from "react";
-import { songs, Track } from "@/data/songs"; // On définit le type Track dans data/songs
+import { useEffect, useState } from "react";
+import { songs, Track } from "@/data/songs";
 import AudioPlayer from "@/components/player/audio-player";
 import TrackList from "@/components/track-list/track-list";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Header from "@/components/header/header";
+import { usePlayerStore } from "@/store/player-store";
 
 export default function MusicPage() {
-  const [currentTrack, setCurrentTrack] = useState<Track | undefined>(
-    undefined,
-  );
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const { currentTrack, setCurrentTrack, setIsPlaying } = usePlayerStore();
   const [isMounted, setIsMounted] = useState(false);
 
-  // Charger l'état depuis localStorage au montage
+  // Charger l'état depuis localStorage au montage (Zustand gère automatiquement la persistance)
   useEffect(() => {
-    const savedTrackId = localStorage.getItem("currentTrackId");
-    const savedIsPlaying = localStorage.getItem("isPlaying");
-    const savedPosition = localStorage.getItem("currentPosition");
-
-    if (savedTrackId) {
-      const track = songs.find((t) => t.id === parseInt(savedTrackId));
-      if (track) {
-        setCurrentTrack(track);
-        // On stocke la position pour la restaurer dans AudioPlayer
-        if (savedPosition) {
-          sessionStorage.setItem("restorePosition", savedPosition);
-        }
-      }
-    }
-
-    if (savedIsPlaying === "true") {
-      setIsPlaying(true);
-    }
-
     setIsMounted(true);
   }, []);
-
-  // Sauvegarder l'état dans localStorage à chaque changement
-  useEffect(() => {
-    if (isMounted && currentTrack) {
-      localStorage.setItem("currentTrackId", String(currentTrack.id));
-    }
-  }, [currentTrack, isMounted]);
-
-  useEffect(() => {
-    if (isMounted) {
-      localStorage.setItem("isPlaying", String(isPlaying));
-    }
-  }, [isPlaying, isMounted]);
 
   const handleSelectTrack = (track: Track) => {
     setCurrentTrack(track);
     setIsPlaying(true);
-    sessionStorage.removeItem("restorePosition");
   };
 
   return (
@@ -73,11 +38,7 @@ export default function MusicPage() {
       </div>
 
       <div className="shadow-lg px-2 pb-2">
-        <AudioPlayer
-          track={currentTrack}
-          isPlaying={isPlaying}
-          onTogglePlay={() => setIsPlaying(!isPlaying)}
-        />
+        <AudioPlayer track={currentTrack} />
       </div>
     </div>
   );

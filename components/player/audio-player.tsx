@@ -7,24 +7,26 @@ import ProgressBar from "@/components/player/progress-bar";
 import TrackInfo from "./track-info";
 import Controls from "./controls";
 import SecondaryControls from "./secondary-controls";
+import {
+  usePlayerIsPlaying,
+  usePlayerVolume,
+  usePlayerActions,
+} from "@/store/player-store";
 
 interface AudioPlayerProps {
   track: Track | undefined;
-  isPlaying: boolean;
-  onTogglePlay: () => void;
 }
 
-export default function AudioPlayer({
-  track,
-  isPlaying,
-  onTogglePlay,
-}: AudioPlayerProps) {
-  // 1. La référence à l'élément HTMLAudioElement
+export default function AudioPlayer({ track }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(80); // Volume entre 0 et 1
+  const isPlaying = usePlayerIsPlaying();
+  const volume = usePlayerVolume();
+  const { setVolume, setIsPlaying, setCurrentPosition } = usePlayerActions();
 
-  // 2. Synchroniser l'état isPlaying avec l'API native .play()/.pause()
+  // État local pour le progress (ne cause pas de re-rendus du store)
+  const [progress, setProgress] = useState(0);
+
+  // Synchroniser l'état isPlaying avec l'API native .play()/.pause()
   useEffect(() => {
     if (!audioRef.current) return;
 
@@ -35,30 +37,17 @@ export default function AudioPlayer({
     } else {
       audioRef.current.pause();
     }
-  }, [isPlaying, track]); // Se redéclenche si isPlaying ou la musique change
-
-  // Restaurer la position de lecture au montage
-  useEffect(() => {
-    if (!audioRef.current || !track) return;
-
-    const restorePosition = sessionStorage.getItem("restorePosition");
-    if (restorePosition) {
-      const position = parseFloat(restorePosition);
-      audioRef.current.currentTime = position;
-      sessionStorage.removeItem("restorePosition");
-    }
-  }, [track]);
+  }, [isPlaying, track]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       const current =
         (audioRef.current.currentTime / audioRef.current.duration) * 100;
       setProgress(current);
-      // Sauvegarder la position actuelle
-      localStorage.setItem(
-        "currentPosition",
-        String(audioRef.current.currentTime),
-      );
+      // Sauvegarder la position tous les 5 secondes seulement
+      if (Math.floor(audioRef.current.currentTime) % 5 === 0) {
+        setCurrentPosition(audioRef.current.currentTime);
+      }
     }
   };
 
@@ -96,7 +85,7 @@ export default function AudioPlayer({
             <Controls
               isPlaying={isPlaying}
               haveTrack={!!track}
-              onTogglePlay={onTogglePlay}
+              onTogglePlay={() => setIsPlaying(!isPlaying)}
             />
           </div>
           <div className="hidden md:flex md:flex-1/4 md:justify-end">
