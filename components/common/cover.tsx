@@ -3,9 +3,11 @@ import { Music2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import { Playlist } from "@/data/playlists";
 
 interface CoverProps {
   track?: Track;
+  playlist?: Playlist;
   size?: number;
   icon?: ReactNode;
 }
@@ -20,8 +22,16 @@ const sizeMap: Record<number, string> = {
   64: "w-64 h-64",
 };
 
-export default function Cover({ track, size = 24, icon }: CoverProps) {
+export default function Cover({
+  track,
+  playlist,
+  size = 24,
+  icon,
+}: CoverProps) {
   const sizeClass = sizeMap[size] || "w-24 h-24";
+
+  let coverUrl = track?.coverUrl || playlist?.coverUrl;
+  let alt = track?.title || playlist?.name || "Cover";
 
   return (
     <Card
@@ -30,12 +40,13 @@ export default function Cover({ track, size = 24, icon }: CoverProps) {
         sizeClass,
       )}
     >
-      {(!track || !track.coverUrl) && <Music2 size={size} />}
-      {track && track.coverUrl && (
+      {!coverUrl ? (
+        <Music2 size={size} />
+      ) : (
         <div className="rounded-lg object-cover relative w-full h-full">
           <img
-            src={track?.coverUrl}
-            alt={track?.title ?? ""}
+            src={coverUrl}
+            alt={alt}
             className="rounded-lg object-cover w-full h-full"
           />
           {icon && (

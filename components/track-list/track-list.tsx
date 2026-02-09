@@ -18,6 +18,8 @@ interface TrackListProps {
   activeTrackId: number | undefined;
   loading?: boolean;
   error?: string | null;
+  mode?: "library" | "playlist";
+  onDeleteTrack?: (trackId: number) => void;
 }
 
 export default function TrackList({
@@ -26,6 +28,8 @@ export default function TrackList({
   activeTrackId,
   loading = false,
   error = null,
+  mode = "library",
+  onDeleteTrack,
 }: TrackListProps) {
   const [hoveredTrackId, setHoveredTrackId] = useState<number | undefined>();
 
@@ -40,39 +44,44 @@ export default function TrackList({
             <TableHead>Title</TableHead>
             <TableHead>Album</TableHead>
             <TableHead>Durée</TableHead>
+            <TableHead className="w-12"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-
-          {loading ? 
-          Array.from({ length: 8 }).map((_, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                  <Skeleton className="h-4 w-4" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-24" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-32" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-12" />
-                </TableCell>
-              </TableRow>
-            ))
-          :tracks.map((track) => (
-            <TrackItem
-              key={track.id}
-              track={track}
-              isActive={activeTrackId === track.id}
-              isHovered={hoveredTrackId === track.id}
-              onClick={() => onSelect(track)}
-              onHoverChange={(isHovered) =>
-                setHoveredTrackId(isHovered ? track.id : undefined)
-              }
-            />
-          ))}
+          {loading
+            ? Array.from({ length: 8 }).map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton className="h-4 w-4" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-32" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-12" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-4" />
+                  </TableCell>
+                </TableRow>
+              ))
+            : tracks.map((track) => (
+                <TrackItem
+                  key={track.id}
+                  track={track}
+                  isActive={activeTrackId === track.id}
+                  isHovered={hoveredTrackId === track.id}
+                  onClick={() => onSelect(track)}
+                  onHoverChange={(isHovered) =>
+                    setHoveredTrackId(isHovered ? track.id : undefined)
+                  }
+                  mode={mode}
+                  onDeleteTrack={onDeleteTrack}
+                />
+              ))}
         </TableBody>
       </Table>
     </div>

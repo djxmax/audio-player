@@ -6,7 +6,7 @@ import { Track } from "@/data/songs";
 import { usePlayerStore } from "@/store/player-store";
 import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
 import TrackList from "@/components/track-list/track-list";
-import { Card } from "@/components/ui/card";
+import Cover from "../common/cover";
 
 interface PlaylistContentProps {
   playlistId: string;
@@ -27,6 +27,15 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
     setIsPlaying(true);
   };
 
+  const handleDeleteTrack = (trackId: number) => {
+    if (playlist) {
+      setPlaylist({
+        ...playlist,
+        tracks: playlist.tracks.filter((t) => t.id !== trackId),
+      });
+    }
+  };
+
   if (!playlist) {
     return (
       <div className="p-6">
@@ -38,14 +47,8 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
   return (
     <div className="p-6">
       <div className="flex gap-6 mb-8">
-        <div className="w-40 h-40 flex-shrink-0">
-          <Card className="w-full h-full overflow-hidden p-0 bg-secondary flex items-center justify-center">
-            <img
-              src={playlist.coverUrl}
-              alt={playlist.name}
-              className="w-full h-full object-cover"
-            />
-          </Card>
+        <div className="flex-shrink-0">
+          <Cover playlist={playlist} size={48} />
         </div>
         <div>
           <h1 className="text-4xl font-bold mb-2">{playlist.name}</h1>
@@ -59,6 +62,8 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
         tracks={playlist.tracks || []}
         onSelect={handleSelectTrack}
         activeTrackId={currentTrack?.id}
+        mode="playlist"
+        onDeleteTrack={handleDeleteTrack}
       />
     </div>
   );

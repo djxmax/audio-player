@@ -2,7 +2,9 @@ import { Track } from "@/data/songs";
 import { TableCell, TableRow } from "@/components/ui/table";
 import Cover from "../common/cover";
 import { formatTime } from "@/lib/utils";
-import { Play, AudioLines } from "lucide-react";
+import { Play, AudioLines, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import PlaylistAddMenu from "./playlist-add-menu";
 
 interface TableItemProps {
   track: Track;
@@ -10,6 +12,9 @@ interface TableItemProps {
   isHovered?: boolean;
   onHoverChange?: (isHovered: boolean) => void;
   onClick?: (track: Track) => void;
+  mode?: "library" | "playlist";
+  onDeleteTrack?: (trackId: number) => void;
+  onAddToPlaylist?: (playlistId: string) => void;
 }
 
 function getIcon(isActive?: boolean, isHovered?: boolean) {
@@ -27,6 +32,9 @@ export default function TableItem({
   isHovered,
   onHoverChange,
   onClick,
+  mode = "library",
+  onDeleteTrack,
+  onAddToPlaylist,
 }: TableItemProps) {
   return (
     <TableRow
@@ -45,6 +53,23 @@ export default function TableItem({
       </TableCell>
       <TableCell>{track.album ?? ""}</TableCell>
       <TableCell>{formatTime(track.duration)}</TableCell>
+      <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+        {mode === "library" ? (
+          <PlaylistAddMenu
+            trackId={track.id}
+            onAddToPlaylist={onAddToPlaylist}
+          />
+        ) : (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 hover:text-destructive"
+            onClick={() => onDeleteTrack?.(track.id)}
+          >
+            <Trash2 size={16} />
+          </Button>
+        )}
+      </TableCell>
     </TableRow>
   );
 }
