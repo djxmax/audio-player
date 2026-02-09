@@ -13,6 +13,8 @@ interface CoverProps {
 }
 
 const sizeMap: Record<number, string> = {
+  4: "w-4 h-4",
+  6: "w-6 h-6",
   8: "w-8 h-8",
   12: "w-12 h-12",
   16: "w-16 h-16",

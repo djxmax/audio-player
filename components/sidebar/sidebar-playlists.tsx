@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
 import { useNavigationStore } from "@/store/navigation-store";
 import PlaylistDialog from "@/components/common/playlist-dialog";
+import Cover from "@/components/common/cover";
 
 export function SidebarPlaylists() {
   const { playlists, loading } = useFetchPlaylists();
@@ -63,6 +64,7 @@ export function SidebarPlaylists() {
                       isActive={selectedPlaylistId === playlist.id}
                       className="cursor-pointer"
                     >
+                      <Cover playlist={playlist} size={6} />
                       {playlist.name}
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
