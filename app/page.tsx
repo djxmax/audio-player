@@ -7,6 +7,7 @@ import TrackList from "@/components/track-list/track-list";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Header from "@/components/header/header";
 import { usePlayerStore } from "@/store/player-store";
+import MainContent from "@/components/main-content/main-content";
 
 export default function MusicPage() {
   const { currentTrack, setCurrentTrack, setIsPlaying } = usePlayerStore();
@@ -30,10 +31,7 @@ export default function MusicPage() {
 
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
-          <TrackList
-            onSelect={handleSelectTrack}
-            activeTrackId={currentTrack?.id}
-          />
+          <MainContent />
         </ScrollArea>
       </div>
 

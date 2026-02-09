@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/sidebar";
 import { SidebarPlaylists } from "./sidebar-playlists";
 import SidebarTop from "./siderbar-top";
+import { useNavigationStore } from "@/store/navigation-store";
 
 export function AppSidebar() {
+  const { setLibrary, contentType } = useNavigationStore();
+
   return (
     <Sidebar>
       <SidebarTop />
@@ -20,8 +23,12 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Ma musique</SidebarGroupLabel>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <a href="#library">Bibliothèque</a>
+            <SidebarMenuButton
+              onClick={setLibrary}
+              isActive={contentType === "library"}
+              className="cursor-pointer"
+            >
+              Bibliothèque
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarPlaylists />

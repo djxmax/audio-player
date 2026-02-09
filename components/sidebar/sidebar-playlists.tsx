@@ -17,10 +17,12 @@ import {
 } from "@/components/ui/collapsible";
 import { ChevronRightIcon } from "lucide-react";
 import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
+import { useNavigationStore } from "@/store/navigation-store";
 
 export function SidebarPlaylists() {
   const { playlists, loading } = useFetchPlaylists();
   const [isOpen, setIsOpen] = useState(false);
+  const { setSelectedPlaylist, selectedPlaylistId } = useNavigationStore();
 
   return (
     <SidebarMenu>
@@ -52,8 +54,12 @@ export function SidebarPlaylists() {
               ) : playlists.length > 0 ? (
                 playlists.map((playlist) => (
                   <SidebarMenuSubItem key={playlist.id}>
-                    <SidebarMenuSubButton asChild>
-                      <a href={`#playlist-${playlist.id}`}>{playlist.name}</a>
+                    <SidebarMenuSubButton
+                      onClick={() => setSelectedPlaylist(playlist.id)}
+                      isActive={selectedPlaylistId === playlist.id}
+                      className="cursor-pointer"
+                    >
+                      {playlist.name}
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 ))
