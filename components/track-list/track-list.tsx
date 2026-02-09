@@ -1,6 +1,5 @@
 import { Track } from "@/data/songs";
 import { useState } from "react";
-import { useFetchTracks } from "@/hooks/use-fetch-tracks";
 import {
   Table,
   TableBody,
@@ -10,18 +9,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import TrackItem from "./track-item";
 
 interface TrackListProps {
+  tracks: Track[];
   onSelect: (track: Track) => void;
   activeTrackId: number | undefined;
+  loading?: boolean;
+  error?: string | null;
 }
 
-export default function TrackList({ onSelect, activeTrackId }: TrackListProps) {
+export default function TrackList({
+  tracks,
+  onSelect,
+  activeTrackId,
+  loading = false,
+  error = null,
+}: TrackListProps) {
   const [hoveredTrackId, setHoveredTrackId] = useState<number | undefined>();
-  const { tracks, loading, error } = useFetchTracks();
 
-  if (loading) return <div>Chargement...</div>;
   if (error) return <div>Erreur: {error}</div>;
 
   return (
@@ -36,7 +43,25 @@ export default function TrackList({ onSelect, activeTrackId }: TrackListProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tracks.map((track) => (
+
+          {loading ? 
+          Array.from({ length: 8 }).map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-4" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-24" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-32" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-12" />
+                </TableCell>
+              </TableRow>
+            ))
+          :tracks.map((track) => (
             <TrackItem
               key={track.id}
               track={track}

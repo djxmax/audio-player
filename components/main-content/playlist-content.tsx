@@ -56,6 +56,7 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
         </div>
       </div>
       <TrackList
+        tracks={playlist.tracks || []}
         onSelect={handleSelectTrack}
         activeTrackId={currentTrack?.id}
       />
