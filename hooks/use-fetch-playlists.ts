@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Playlist } from "@/data/playlists";
+import { getApiHeaders, getApiUrl } from "@/lib/utils";
 
 export function useFetchPlaylists() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -11,19 +12,8 @@ export function useFetchPlaylists() {
       try {
         setLoading(true);
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const apiKey = process.env.NEXT_PUBLIC_API_KEY ?? "";
-
-        if (!apiUrl || !apiKey) {
-          alert("Configuration manquante !");
-          return;
-        }
-
-        const response = await fetch(apiUrl + "/playlists", {
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-          },
+        const response = await fetch(`${getApiUrl()}/playlists`, {
+          headers: getApiHeaders(),
         });
         if (!response.ok) {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);

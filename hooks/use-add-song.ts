@@ -1,5 +1,6 @@
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { getApiHeaders, getApiUrl } from "@/lib/utils";
 
 export interface FormData {
   title: string;
@@ -11,62 +12,58 @@ export interface FormData {
 }
 
 export function useAddSong() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
-      title: "",
-      artist: "",
-      album: "",
-      url: "",
-      coverUrl: "",
-      duration: 0,
-    });
+    title: "",
+    artist: "",
+    album: "",
+    url: "",
+    coverUrl: "",
+    duration: 0,
+  });
 
   const updateField = (field: keyof typeof formData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSave = async (onSuccess?: () => void) => {
     if (!formData.url || !formData.coverUrl) {
-      alert("Fichiers manquants !")
-      return
+      alert("Fichiers manquants !");
+      return;
     }
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY ?? "";
-
-    if(!apiUrl || !apiKey) {
-    alert("Configuration manquante !")
-    return
-    }
-
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await fetch(`${apiUrl}/songs`, {
+      const response = await fetch(`${getApiUrl()}/songs`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey
-        },
-        body: JSON.stringify(formData)
-      })
+        headers: getApiHeaders(),
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
-        setFormData({ title: "", artist: "", album: "", url: "", coverUrl: "", duration: 0 })
-        router.refresh()
-        if (onSuccess) onSuccess()
+        setFormData({
+          title: "",
+          artist: "",
+          album: "",
+          url: "",
+          coverUrl: "",
+          duration: 0,
+        });
+        router.refresh();
+        if (onSuccess) onSuccess();
       }
     } catch (error) {
-      console.error("Erreur save:", error)
+      console.error("Erreur save:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return {
     formData,
     loading,
     updateField,
-    handleSave
-  }
+    handleSave,
+  };
 }

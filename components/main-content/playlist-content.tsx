@@ -6,7 +6,7 @@ import { Track } from "@/data/songs";
 import { usePlayerStore } from "@/store/player-store";
 import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
 import TrackList from "@/components/track-list/track-list";
-import Cover from "../common/cover";
+import PlaylistDetails from "./playlist-details";
 
 interface PlaylistContentProps {
   playlistId: string;
@@ -19,6 +19,7 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
 
   useEffect(() => {
     const found = playlists.find((p) => p.id === playlistId);
+    console.log("found playlist:", found);
     setPlaylist(found || null);
   }, [playlistId, playlists]);
 
@@ -31,7 +32,7 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
     if (playlist) {
       setPlaylist({
         ...playlist,
-        tracks: playlist.tracks.filter((t) => t.id !== trackId),
+        songs: playlist.songs.filter((t) => t.id !== trackId),
       });
     }
   };
@@ -46,20 +47,9 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
 
   return (
     <div className="p-6">
-      <div className="flex gap-6 mb-8">
-        <div className="flex-shrink-0">
-          <Cover playlist={playlist} size={48} />
-        </div>
-        <div>
-          <h1 className="text-4xl font-bold mb-2">{playlist.name}</h1>
-          <p className="text-muted-foreground mb-4">{playlist.description}</p>
-          <p className="text-sm text-muted-foreground">
-            {playlist.tracks?.length || 0} chansons
-          </p>
-        </div>
-      </div>
+      <PlaylistDetails playlist={playlist} />
       <TrackList
-        tracks={playlist.tracks || []}
+        tracks={playlist.songs || []}
         onSelect={handleSelectTrack}
         activeTrackId={currentTrack?.id}
         mode="playlist"

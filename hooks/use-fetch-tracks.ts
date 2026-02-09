@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Track } from "@/data/songs";
+import { getApiHeaders, getApiUrl } from "@/lib/utils";
+import { get } from "http";
 
 export function useFetchTracks() {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -11,19 +13,8 @@ export function useFetchTracks() {
       try {
         setLoading(true);
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY ?? "";
-
-    if(!apiUrl || !apiKey) {
-    alert("Configuration manquante !")
-    return
-    }
-
-        const response = await fetch(apiUrl + "/songs", {
-            headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey
-        },
+        const response = await fetch(`${getApiUrl()}/songs`, {
+          headers: getApiHeaders(),
         });
         if (!response.ok) {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);

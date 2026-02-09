@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getApiHeaders, getApiUrl } from "@/lib/utils";
 
 export function useAddSongToPlaylist() {
   const [loading, setLoading] = useState(false);
@@ -9,21 +10,14 @@ export function useAddSongToPlaylist() {
       setLoading(true);
       setError(null);
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const apiKey = process.env.NEXT_PUBLIC_API_KEY ?? "";
-
-      if (!apiUrl || !apiKey) {
-        throw new Error("Configuration manquante !");
-      }
-
-      const response = await fetch(`${apiUrl}/playlists/${playlistId}/songs`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
+      const response = await fetch(
+        `${getApiUrl()}/playlists/${playlistId}/songs`,
+        {
+          method: "PATCH",
+          headers: getApiHeaders(),
+          body: JSON.stringify({ songId }),
         },
-        body: JSON.stringify({ songId }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Erreur ${response.status}: ${response.statusText}`);
