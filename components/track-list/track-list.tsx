@@ -1,5 +1,6 @@
 import { Track } from "@/data/songs";
 import { useState } from "react";
+import { useFetchTracks } from "@/hooks/use-fetch-tracks";
 import {
   Table,
   TableBody,
@@ -12,17 +13,16 @@ import {
 import TrackItem from "./track-item";
 
 interface TrackListProps {
-  tracks: Track[];
   onSelect: (track: Track) => void;
   activeTrackId: number | undefined;
 }
 
-export default function TrackList({
-  tracks,
-  onSelect,
-  activeTrackId,
-}: TrackListProps) {
+export default function TrackList({ onSelect, activeTrackId }: TrackListProps) {
   const [hoveredTrackId, setHoveredTrackId] = useState<number | undefined>();
+  const { tracks, loading, error } = useFetchTracks();
+
+  if (loading) return <div>Chargement...</div>;
+  if (error) return <div>Erreur: {error}</div>;
 
   return (
     <div>

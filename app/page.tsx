@@ -66,7 +66,6 @@ export default function MusicPage() {
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
           <TrackList
-            tracks={songs}
             onSelect={handleSelectTrack}
             activeTrackId={currentTrack?.id}
           />

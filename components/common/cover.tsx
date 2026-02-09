@@ -30,11 +30,11 @@ export default function Cover({ track, size = 24, icon }: CoverProps) {
         sizeClass,
       )}
     >
-      {!track && <Music2 size={size} />}
-      {track && (
+      {(!track || !track.coverUrl) && <Music2 size={size} />}
+      {track && track.coverUrl && (
         <div className="rounded-lg object-cover relative w-full h-full">
           <img
-            src={track?.cover}
+            src={track?.coverUrl}
             alt={track?.title ?? ""}
             className="rounded-lg object-cover w-full h-full"
           />

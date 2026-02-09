@@ -15,7 +15,7 @@ export default function Controls({
 }: ControlsProps) {
   return (
     <div className="flex items-center gap-4 mt-2">
-      <Button variant="ghost" size="icon" className="hidden md:block">
+      <Button variant="ghost" size="icon" className="hidden md:block" disabled>
         <SkipBack />
       </Button>
 
@@ -28,7 +28,7 @@ export default function Controls({
         {isPlaying ? <Pause /> : <Play />}
       </Button>
 
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" disabled>
         <SkipForward />
       </Button>
     </div>
