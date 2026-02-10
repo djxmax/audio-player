@@ -8,21 +8,29 @@ interface PlayerState {
   isPlaying: boolean;
   volume: number;
   currentPosition: number;
+  playlistTracks: Track[];
+  currentTrackIndex: number;
 
   setCurrentTrack: (track: Track | undefined) => void;
   setIsPlaying: (playing: boolean) => void;
   setVolume: (volume: number) => void;
   setCurrentPosition: (position: number) => void;
   togglePlay: () => void;
+  setPlaylistTracks: (tracks: Track[]) => void;
+  setCurrentTrackFromPlaylist: (track: Track, tracks: Track[]) => void;
+  playNextTrack: () => void;
+  playPreviousTrack: () => void;
 }
 
 export const usePlayerStore = create<PlayerState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       currentTrack: undefined,
       isPlaying: false,
       volume: 80,
       currentPosition: 0,
+      playlistTracks: [],
+      currentTrackIndex: -1,
 
       setCurrentTrack: (track) =>
         set({ currentTrack: track, currentPosition: 0 }),
@@ -30,6 +38,40 @@ export const usePlayerStore = create<PlayerState>()(
       setVolume: (volume) => set({ volume }),
       setCurrentPosition: (position) => set({ currentPosition: position }),
       togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
+      setPlaylistTracks: (tracks) => set({ playlistTracks: tracks }),
+      setCurrentTrackFromPlaylist: (track, tracks) => {
+        const index = tracks.findIndex((t) => t.id === track.id);
+        set({
+          currentTrack: track,
+          currentPosition: 0,
+          playlistTracks: tracks,
+          currentTrackIndex: index,
+        });
+      },
+      playNextTrack: () => {
+        const state = get();
+        const nextIndex = state.currentTrackIndex + 1;
+        if (nextIndex < state.playlistTracks.length) {
+          const nextTrack = state.playlistTracks[nextIndex];
+          set({
+            currentTrack: nextTrack,
+            currentPosition: 0,
+            currentTrackIndex: nextIndex,
+          });
+        }
+      },
+      playPreviousTrack: () => {
+        const state = get();
+        const prevIndex = state.currentTrackIndex - 1;
+        if (prevIndex >= 0) {
+          const prevTrack = state.playlistTracks[prevIndex];
+          set({
+            currentTrack: prevTrack,
+            currentPosition: 0,
+            currentTrackIndex: prevIndex,
+          });
+        }
+      },
     }),
     {
       name: "player-storage",

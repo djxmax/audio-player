@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, SkipForward, SkipBack } from "lucide-react"; // Shadcn utilise souvent Lucide pour les icônes
+import { Play, Pause, SkipForward, SkipBack } from "lucide-react";
+import { usePlayerStore } from "@/store/player-store";
 
 interface ControlsProps {
   isPlaying: boolean;
@@ -13,9 +14,25 @@ export default function Controls({
   haveTrack,
   onTogglePlay,
 }: ControlsProps) {
+  const {
+    currentTrackIndex,
+    playlistTracks,
+    playPreviousTrack,
+    playNextTrack,
+  } = usePlayerStore();
+
+  const canPlayPrevious = currentTrackIndex > 0;
+  const canPlayNext = currentTrackIndex < playlistTracks.length - 1;
+
   return (
     <div className="flex items-center gap-4 mt-2">
-      <Button variant="ghost" size="icon" className="hidden md:block" disabled>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="hidden md:block"
+        disabled={!canPlayPrevious}
+        onClick={playPreviousTrack}
+      >
         <SkipBack />
       </Button>
 
@@ -28,7 +45,12 @@ export default function Controls({
         {isPlaying ? <Pause /> : <Play />}
       </Button>
 
-      <Button variant="ghost" size="icon" disabled>
+      <Button
+        variant="ghost"
+        size="icon"
+        disabled={!canPlayNext}
+        onClick={playNextTrack}
+      >
         <SkipForward />
       </Button>
     </div>

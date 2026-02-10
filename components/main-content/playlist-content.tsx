@@ -14,7 +14,12 @@ interface PlaylistContentProps {
 }
 
 export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
-  const { currentTrack, setCurrentTrack, setIsPlaying } = usePlayerStore();
+  const {
+    currentTrack,
+    setCurrentTrack,
+    setIsPlaying,
+    setCurrentTrackFromPlaylist,
+  } = usePlayerStore();
   const { playlists } = useFetchPlaylists();
   const { setLibrary, invalidatePlaylists } = useNavigationStore();
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
@@ -26,7 +31,11 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
   }, [playlistId, playlists]);
 
   const handleSelectTrack = (track: Track) => {
-    setCurrentTrack(track);
+    if (playlist && playlist.songs) {
+      setCurrentTrackFromPlaylist(track, playlist.songs);
+    } else {
+      setCurrentTrack(track);
+    }
     setIsPlaying(true);
   };
 
