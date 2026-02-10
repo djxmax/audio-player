@@ -29,8 +29,8 @@ export function AddSongDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Ajouter une musique
+          <PlusCircle className="md:mr-2 h-4 w-4" />
+          <span className="hidden md:inline">Ajouter une musique</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -15,12 +15,12 @@ export default function Header() {
     <Card className="w-full mx-auto overflow-hidden">
       <CardContent className="px-6">
         <div className="flex felx-row items-center gap-4">
-          <div className="flex-1/4">
+          <div className="flex-auto md:flex-1/4">
             <Button variant="outline" size="icon" onClick={toggleSidebar}>
               <PanelLeft />
             </Button>
           </div>
-          <div className="flex-1/2">
+          <div className="flex-auto md:flex-1/2">
             <Search />
           </div>
           <div className="flex-1/4 flex flex-row items-center justify-end gap-4 h-full">
