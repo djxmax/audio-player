@@ -25,7 +25,7 @@ export default function MusicPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="sticky top-0 bg-background px-2 pt-2">
+      <div className="sticky top-0 bg-background px-1 pt-1 md:px-2 md:pt-2">
         <Header />
       </div>
 
@@ -35,7 +35,7 @@ export default function MusicPage() {
         </ScrollArea>
       </div>
 
-      <div className="shadow-lg px-2 pb-2">
+      <div className="shadow-lg px-1 pb-1 md:px-2 md:pb-2">
         <AudioPlayer track={currentTrack} />
       </div>
     </div>

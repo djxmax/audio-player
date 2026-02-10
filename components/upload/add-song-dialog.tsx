@@ -46,7 +46,10 @@ export function AddSongDialog() {
           <div className="flex flex-col gap-4 mt-2">
             <MusicUploader formData={formData} updateField={updateField} />
 
-            <CoverUploader formData={formData} updateField={handleUpdateField} />
+            <CoverUploader
+              formData={formData}
+              updateField={handleUpdateField}
+            />
           </div>
         </div>
 
