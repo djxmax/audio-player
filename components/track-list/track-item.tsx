@@ -1,4 +1,5 @@
 import { Track } from "@/data/songs";
+import { Playlist } from "@/data/playlists";
 import { TableCell, TableRow } from "@/components/ui/table";
 import Cover from "../common/cover";
 import { formatTime } from "@/lib/utils";
@@ -16,6 +17,7 @@ interface TableItemProps {
   mode?: "library" | "playlist";
   onDeleteTrack?: (trackId: number) => void;
   onAddToPlaylist?: (playlistId: string) => void;
+  playlists?: Playlist[];
 }
 
 function getIcon(isActive?: boolean, isHovered?: boolean) {
@@ -37,6 +39,7 @@ export default function TableItem({
   mode = "library",
   onDeleteTrack,
   onAddToPlaylist,
+  playlists = [],
 }: TableItemProps) {
   return (
     <TableRow
@@ -65,6 +68,7 @@ export default function TableItem({
           <PlaylistAddMenu
             trackId={track.id}
             onAddToPlaylist={onAddToPlaylist}
+            playlists={playlists}
           />
         ) : (
           <Button

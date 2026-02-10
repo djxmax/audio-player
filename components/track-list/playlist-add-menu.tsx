@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { Playlist } from "@/data/playlists";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,19 +10,19 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
 import { useAddSongToPlaylist } from "@/hooks/use-add-song-to-playlist";
 
 interface PlaylistAddMenuProps {
   trackId: number;
   onAddToPlaylist?: (playlistId: string) => void;
+  playlists: Playlist[];
 }
 
 export default function PlaylistAddMenu({
   trackId,
   onAddToPlaylist,
+  playlists,
 }: PlaylistAddMenuProps) {
-  const { playlists, loading } = useFetchPlaylists();
   const { addSongToPlaylist, loading: isAdding } = useAddSongToPlaylist();
 
   const handleAddToPlaylist = async (playlistId: string) => {
@@ -45,10 +46,10 @@ export default function PlaylistAddMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Ajouter à la playlist</DropdownMenuLabel>
-          {loading ? (
-            <DropdownMenuItem disabled>Chargement...</DropdownMenuItem>
-          ) : playlists.length > 0 ? (
+          <DropdownMenuLabel className="text-muted-foreground">
+            Ajouter à la playlist
+          </DropdownMenuLabel>
+          {playlists.length > 0 ? (
             playlists.map((playlist) => (
               <DropdownMenuItem
                 key={playlist.id}

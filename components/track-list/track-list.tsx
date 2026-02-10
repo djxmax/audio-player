@@ -1,4 +1,5 @@
 import { Track } from "@/data/songs";
+import { Playlist } from "@/data/playlists";
 import { useState } from "react";
 import {
   Table,
@@ -20,6 +21,7 @@ interface TrackListProps {
   error?: string | null;
   mode?: "library" | "playlist";
   onDeleteTrack?: (trackId: number) => void;
+  playlists?: Playlist[];
 }
 
 export default function TrackList({
@@ -30,6 +32,7 @@ export default function TrackList({
   error = null,
   mode = "library",
   onDeleteTrack,
+  playlists = [],
 }: TrackListProps) {
   const [hoveredTrackId, setHoveredTrackId] = useState<number | undefined>();
 
@@ -83,6 +86,7 @@ export default function TrackList({
                   }
                   mode={mode}
                   onDeleteTrack={onDeleteTrack}
+                  playlists={playlists}
                 />
               ))}
         </TableBody>

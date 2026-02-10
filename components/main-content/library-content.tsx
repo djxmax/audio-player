@@ -3,12 +3,14 @@
 import { Track } from "@/data/songs";
 import { usePlayerStore } from "@/store/player-store";
 import { useFetchTracks } from "@/hooks/use-fetch-tracks";
+import { useFetchPlaylists } from "@/hooks/use-fetch-playlists";
 import { useSearchStore } from "@/store/search-store";
 import TrackList from "@/components/track-list/track-list";
 
 export default function LibraryContent() {
   const { currentTrack, setCurrentTrack, setIsPlaying } = usePlayerStore();
   const { tracks, loading, error } = useFetchTracks();
+  const { playlists } = useFetchPlaylists();
   const { results: searchResults } = useSearchStore();
 
   const handleSelectTrack = (track: Track) => {
@@ -28,6 +30,7 @@ export default function LibraryContent() {
         activeTrackId={currentTrack?.id}
         loading={loading}
         error={error}
+        playlists={playlists}
       />
     </div>
   );
