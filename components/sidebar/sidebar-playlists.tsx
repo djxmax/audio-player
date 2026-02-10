@@ -64,8 +64,8 @@ export function SidebarPlaylists() {
                       isActive={selectedPlaylistId === playlist.id}
                       className="cursor-pointer"
                     >
-                      <Cover playlist={playlist} size={6} />
-                      {playlist.name}
+                      <Cover playlist={playlist} className="w-6 h-6" />
+                      <span className="truncate">{playlist.name}</span>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 ))

@@ -12,8 +12,8 @@ export default function Header() {
   const { toggleSidebar } = useSidebar();
 
   return (
-    <Card className="w-full mx-auto overflow-hidden">
-      <CardContent className="px-6">
+    <Card className="w-full mx-auto overflow-hidden p-0">
+      <CardContent className="p-2 md:p-6">
         <div className="flex felx-row items-center gap-4">
           <div className="flex-auto md:flex-1/4">
             <Button variant="outline" size="icon" onClick={toggleSidebar}>

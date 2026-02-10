@@ -46,7 +46,7 @@ export default function PlaylistDetails({
   return (
     <div className="flex gap-6 mb-8 items-start">
       <div className="flex-shrink-0">
-        <Cover playlist={playlist} size={48} />
+        <Cover playlist={playlist} className="w-16 h-16 md:w-48 md:h-48" />
       </div>
       <div className="flex-1">
         <h1 className="text-4xl font-bold mb-2">{playlist.name}</h1>

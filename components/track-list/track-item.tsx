@@ -54,7 +54,11 @@ export default function TableItem({
       )}
       <TableCell>
         <div className="flex items-center gap-2">
-          <Cover track={track} size={12} icon={getIcon(isActive, isHovered)} />
+          <Cover
+            track={track}
+            className="w-12 h-12"
+            icon={getIcon(isActive, isHovered)}
+          />
           <div className="flex flex-col">
             <p className="font-bold">{track.title}</p>
             <p className="text-sm text-muted-foreground">{track.artist}</p>

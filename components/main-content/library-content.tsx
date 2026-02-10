@@ -23,7 +23,7 @@ export default function LibraryContent() {
 
   return (
     <div className="p-1 md:p-6">
-      <h1 className="text-3xl font-bold mb-6">Bibliothèque</h1>
+      <h1 className="text-3xl font-bold mb-1 md:mb-6">Bibliothèque</h1>
       <TrackList
         tracks={displayTracks}
         onSelect={handleSelectTrack}

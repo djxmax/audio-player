@@ -61,7 +61,7 @@ export default function AudioPlayer({ track }: AudioPlayerProps) {
   };
 
   return (
-    <Card className="w-full mx-auto overflow-hidden">
+    <Card className="py-0 w-full mx-auto overflow-hidden">
       {/* Balise audio cachée (notre moteur) */}
       <audio
         ref={audioRef}
@@ -70,7 +70,7 @@ export default function AudioPlayer({ track }: AudioPlayerProps) {
         onEnded={() => console.log("Musique terminée")}
       />
 
-      <CardContent className="px-6">
+      <CardContent className="p-2 md:p-6">
         <div className="flex flex-row items-center gap-4">
           <div className="flex-1 md:flex-1/4">
             <TrackInfo track={track} />

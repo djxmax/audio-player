@@ -8,8 +8,8 @@ interface TrackInfoProps {
 
 export default function TrackInfo({ track }: TrackInfoProps) {
   return (
-    <div className="flex flex-row items-center gap-4">
-      <Cover track={track} size={24} />
+    <div className="flex flex-row items-center gap-2">
+      <Cover track={track} className="w-16 h-16 md:w-24 md:h-24" />
 
       <div className="text-left">
         <h3 className="font-bold text-xl">{track?.title ?? ""}</h3>
