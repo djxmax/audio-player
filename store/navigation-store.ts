@@ -7,10 +7,12 @@ interface NavigationState {
   contentType: ContentType;
   selectedPlaylistId: string | null;
   playlistsRefreshKey: number;
+  tracksRefreshKey: number;
   setContentType: (type: ContentType) => void;
   setSelectedPlaylist: (id: string) => void;
   setLibrary: () => void;
   invalidatePlaylists: () => void;
+  invalidateTracks: () => void;
 }
 
 export const useNavigationStore = create<NavigationState>()(
@@ -19,6 +21,7 @@ export const useNavigationStore = create<NavigationState>()(
       contentType: "library",
       selectedPlaylistId: null,
       playlistsRefreshKey: 0,
+      tracksRefreshKey: 0,
       setContentType: (type: ContentType) => set({ contentType: type }),
       setSelectedPlaylist: (id: string) =>
         set({ contentType: "playlist", selectedPlaylistId: id }),
@@ -27,6 +30,10 @@ export const useNavigationStore = create<NavigationState>()(
       invalidatePlaylists: () =>
         set((state) => ({
           playlistsRefreshKey: state.playlistsRefreshKey + 1,
+        })),
+      invalidateTracks: () =>
+        set((state) => ({
+          tracksRefreshKey: state.tracksRefreshKey + 1,
         })),
     }),
     {

@@ -40,7 +40,7 @@ export default function TrackList({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-16">#</TableHead>
+            {mode === "playlist" && <TableHead className="w-4">#</TableHead>}
             <TableHead>Title</TableHead>
             <TableHead>Album</TableHead>
             <TableHead>Durée</TableHead>
@@ -72,6 +72,9 @@ export default function TrackList({
                 <TrackItem
                   key={track.id}
                   track={track}
+                  index={
+                    mode === "playlist" ? tracks.indexOf(track) : undefined
+                  }
                   isActive={activeTrackId === track.id}
                   isHovered={hoveredTrackId === track.id}
                   onClick={() => onSelect(track)}

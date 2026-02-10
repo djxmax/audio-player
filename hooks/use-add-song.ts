@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getApiHeaders, getApiUrl } from "@/lib/utils";
+import { useNavigationStore } from "@/store/navigation-store";
 
 export interface FormData {
   title: string;
@@ -13,6 +14,7 @@ export interface FormData {
 
 export function useAddSong() {
   const router = useRouter();
+  const { invalidateTracks } = useNavigationStore();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -50,6 +52,7 @@ export function useAddSong() {
           coverUrl: "",
           duration: 0,
         });
+        invalidateTracks();
         router.refresh();
         if (onSuccess) onSuccess();
       }

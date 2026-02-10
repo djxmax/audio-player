@@ -10,6 +10,7 @@ interface TableItemProps {
   track: Track;
   isActive?: boolean;
   isHovered?: boolean;
+  index?: number;
   onHoverChange?: (isHovered: boolean) => void;
   onClick?: (track: Track) => void;
   mode?: "library" | "playlist";
@@ -30,6 +31,7 @@ export default function TableItem({
   track,
   isActive,
   isHovered,
+  index,
   onHoverChange,
   onClick,
   mode = "library",
@@ -42,13 +44,18 @@ export default function TableItem({
       onMouseLeave={() => onHoverChange?.(false)}
       onClick={() => onClick && onClick(track)}
     >
+      {index !== undefined && (
+        <TableCell>
+          <span className="text-sm text-muted-foreground">{index + 1}</span>
+        </TableCell>
+      )}
       <TableCell>
-        <Cover track={track} size={12} icon={getIcon(isActive, isHovered)} />
-      </TableCell>
-      <TableCell>
-        <div className="flex flex-col">
-          <p className="font-bold">{track.title}</p>
-          <p className="text-sm text-muted-foreground">{track.artist}</p>
+        <div className="flex items-center gap-2">
+          <Cover track={track} size={12} icon={getIcon(isActive, isHovered)} />
+          <div className="flex flex-col">
+            <p className="font-bold">{track.title}</p>
+            <p className="text-sm text-muted-foreground">{track.artist}</p>
+          </div>
         </div>
       </TableCell>
       <TableCell>{track.album ?? ""}</TableCell>
