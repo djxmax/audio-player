@@ -39,15 +39,15 @@ export default function TrackList({
   if (error) return <div>Erreur: {error}</div>;
 
   return (
-    <div>
-      <Table>
+    <div className="w-full overflow-x-auto">
+      <Table className="w-full table-fixed">
         <TableHeader>
           <TableRow>
-            {mode === "playlist" && <TableHead className="w-4">#</TableHead>}
-            <TableHead>Title</TableHead>
-            <TableHead>Album</TableHead>
-            <TableHead>Durée</TableHead>
-            <TableHead className="w-12"></TableHead>
+            {mode === "playlist" && <TableHead className="w-6">#</TableHead>}
+            <TableHead className="w-auto">Title</TableHead>
+            <TableHead className="hidden md:block md:w-32">Album</TableHead>
+            <TableHead className="w-14">Durée</TableHead>
+            <TableHead className="w-10"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

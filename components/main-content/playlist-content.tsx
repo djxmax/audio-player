@@ -57,7 +57,7 @@ export default function PlaylistContent({ playlistId }: PlaylistContentProps) {
   }
 
   return (
-    <div className="p-6">
+    <div className="w-full p-1 md:p-6">
       <PlaylistDetails
         playlist={playlist}
         onPlaylistUpdate={(updatedPlaylist) => {

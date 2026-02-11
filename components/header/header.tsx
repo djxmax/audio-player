@@ -7,14 +7,19 @@ import { Button } from "@/components/ui/button";
 import { PanelLeft } from "lucide-react";
 import { AddSongDialog } from "../upload/add-song-dialog";
 import { useSidebar } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 
-export default function Header() {
+interface HeaderProps {
+  className?: string;
+}
+
+export default function Header({ className }: HeaderProps) {
   const { toggleSidebar } = useSidebar();
 
   return (
-    <Card className="w-full mx-auto overflow-hidden p-0">
+    <Card className={cn("w-full mx-auto overflow-hidden p-0", className)}>
       <CardContent className="p-2 md:p-6">
-        <div className="flex felx-row items-center gap-4">
+        <div className="flex flex-row items-center gap-4">
           <div className="flex-auto md:flex-1/4">
             <Button variant="outline" size="icon" onClick={toggleSidebar}>
               <PanelLeft />

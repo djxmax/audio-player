@@ -53,20 +53,24 @@ export default function TableItem({
         </TableCell>
       )}
       <TableCell>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full">
           <Cover
             track={track}
-            className="w-12 h-12"
+            className="min-w-12 h-12"
             icon={getIcon(isActive, isHovered)}
           />
-          <div className="flex flex-col">
-            <p className="font-bold">{track.title}</p>
-            <p className="text-sm text-muted-foreground">{track.artist}</p>
+          <div className="flex flex-col w-full min-w-0">
+            <p className="font-bold truncate">{track.title}</p>
+            <p className="text-sm text-muted-foreground truncate">
+              {track.artist}
+            </p>
           </div>
         </div>
       </TableCell>
-      <TableCell>{track.album ?? ""}</TableCell>
-      <TableCell>{formatTime(track.duration)}</TableCell>
+      <TableCell className="hidden md:table-cell md:truncate">
+        {track.album ?? ""}
+      </TableCell>
+      <TableCell className="truncate">{formatTime(track.duration)}</TableCell>
       <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
         {mode === "library" ? (
           <PlaylistAddMenu

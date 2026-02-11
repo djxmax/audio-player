@@ -44,13 +44,15 @@ export default function PlaylistDetails({
     }
   };
   return (
-    <div className="flex gap-6 mb-8 items-start">
+    <div className="w-full flex gap-2 md:gap-6 mb-2 md:mb-8 p-2 md:p-0 items-start">
       <div className="flex-shrink-0">
-        <Cover playlist={playlist} className="w-16 h-16 md:w-48 md:h-48" />
+        <Cover playlist={playlist} className="w-24 h-24 md:w-48 md:h-48" />
       </div>
-      <div className="flex-1">
-        <h1 className="text-4xl font-bold mb-2">{playlist.name}</h1>
-        <p className="text-muted-foreground mb-4">{playlist.description}</p>
+      <div className="flex-1 min-w-0">
+        <h1 className="text-4xl font-bold mb-2 break-words">{playlist.name}</h1>
+        <p className="text-muted-foreground mb-4 break-words">
+          {playlist.description}
+        </p>
         <p className="text-sm text-muted-foreground mb-4">
           {playlist.songs?.length || 0} chansons
         </p>

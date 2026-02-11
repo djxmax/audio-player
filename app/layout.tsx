@@ -36,7 +36,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SidebarProvider>
             <AppSidebar />
-            <main className="flex-1">{children}</main>
+            <main className="h-screen">{children}</main>
           </SidebarProvider>
         </ThemeProvider>
         <Toaster />
