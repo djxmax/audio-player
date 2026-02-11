@@ -56,7 +56,7 @@ export default function TableItem({
         <div className="flex items-center gap-2 w-full">
           <Cover
             track={track}
-            className="min-w-12 h-12"
+            className="min-w-12 max-w-12 h-12"
             icon={getIcon(isActive, isHovered)}
           />
           <div className="flex flex-col w-full min-w-0">
