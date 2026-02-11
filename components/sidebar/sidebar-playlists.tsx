@@ -22,7 +22,11 @@ import { useNavigationStore } from "@/store/navigation-store";
 import PlaylistDialog from "@/components/common/playlist-dialog";
 import Cover from "@/components/common/cover";
 
-export function SidebarPlaylists() {
+export function SidebarPlaylists({
+  onItemClick,
+}: {
+  onItemClick?: () => void;
+}) {
   const { playlists, loading } = useFetchPlaylists();
   const [isOpen, setIsOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -60,7 +64,10 @@ export function SidebarPlaylists() {
                 playlists.map((playlist) => (
                   <SidebarMenuSubItem key={playlist.id}>
                     <SidebarMenuSubButton
-                      onClick={() => setSelectedPlaylist(playlist.id)}
+                      onClick={() => {
+                        setSelectedPlaylist(playlist.id);
+                        onItemClick?.();
+                      }}
                       isActive={selectedPlaylistId === playlist.id}
                       className="cursor-pointer"
                     >
