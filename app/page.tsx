@@ -7,9 +7,12 @@ import TrackList from "@/components/track-list/track-list";
 import Header from "@/components/header/header";
 import { usePlayerStore } from "@/store/player-store";
 import MainContent from "@/components/main-content/main-content";
+import DesktopDrawer from "@/components/drawer/desktop/desktop-drawer";
+import { useIsDesktopDrawerOpen } from "@/store/drawer-store";
 
 export default function MusicPage() {
   const { currentTrack } = usePlayerStore();
+  const isDesktopDrawerOpen = useIsDesktopDrawerOpen();
   const [isMounted, setIsMounted] = useState(false);
 
   // Charger l'état depuis localStorage au montage (Zustand gère automatiquement la persistance)
@@ -18,18 +21,25 @@ export default function MusicPage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen w-screen md:w-auto">
-      <div className="flex-none px-1 pt-1 md:px-2 md:pt-2">
-        <Header />
-      </div>
+    <div className="flex flex-row h-screen w-screen md:w-auto">
+      <div className="flex flex-col h-full w-full">
+        <div className="flex-none px-1 pt-1 md:px-2 md:pt-2">
+          <Header />
+        </div>
 
-      <div className="w-full flex-auto overflow-y-auto">
-        <MainContent />
-      </div>
+        <div className="w-full flex-auto overflow-y-auto">
+          <MainContent />
+        </div>
 
-      <div className="flex-none px-1 pb-1 md:px-2 md:pb-2">
-        <AudioPlayer track={currentTrack} />
+        <div className="flex-none px-1 pb-1 md:px-2 md:pb-2">
+          <AudioPlayer track={currentTrack} />
+        </div>
       </div>
+      {isDesktopDrawerOpen && (
+        <div className="hidden md:block p-2">
+          <DesktopDrawer />
+        </div>
+      )}
     </div>
   );
 }

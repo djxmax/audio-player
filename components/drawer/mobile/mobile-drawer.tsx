@@ -34,12 +34,11 @@ export default function MobileDrawer({ trigger }: MobileDrawerProps) {
   const isMobile = useIsMobile();
 
   const isPlaying = usePlayerIsPlaying();
-  const volume = usePlayerVolume();
   const track = usePlayerTrack();
   const currentPosition = usePlayerPosition();
   const currentTime = usePlayerCurrentTime(); // audioRef.current.currentTime
   const duration = usePlayerDuration();
-  const { setVolume, setIsPlaying, setCurrentPosition } = usePlayerActions();
+  const { setIsPlaying, setCurrentPosition } = usePlayerActions();
 
   const snapPoints = [1];
   const [snap, setSnap] = useState<number | string | null>(snapPoints[0]);
