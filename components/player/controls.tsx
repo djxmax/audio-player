@@ -7,12 +7,14 @@ interface ControlsProps {
   isPlaying: boolean;
   haveTrack: boolean;
   onTogglePlay: () => void;
+  previousClassName?: string;
 }
 
 export default function Controls({
   isPlaying,
   haveTrack,
   onTogglePlay,
+  previousClassName,
 }: ControlsProps) {
   const {
     currentTrackIndex,
@@ -29,7 +31,7 @@ export default function Controls({
       <Button
         variant="ghost"
         size="icon"
-        className="hidden md:block"
+        className={previousClassName}
         disabled={!canPlayPrevious}
         onClick={playPreviousTrack}
       >

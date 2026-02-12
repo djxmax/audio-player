@@ -1,13 +1,14 @@
 "use client";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { formatTime } from "@/lib/utils";
+import { cn, formatTime } from "@/lib/utils";
 
 interface ProgressBarProps {
   progress: number;
   currentTime?: number;
   duration?: number;
   handleSliderChange: (value: number[]) => void;
+  className?: string;
 }
 
 export default function ProgressBar({
@@ -15,9 +16,10 @@ export default function ProgressBar({
   currentTime,
   duration,
   handleSliderChange,
+  className,
 }: ProgressBarProps) {
   return (
-    <div className="hidden md:flex flex-row items-center gap-2 w-full">
+    <div className={cn("flex flex-row items-center gap-2 w-full", className)}>
       <Badge className="text-xs">{formatTime(currentTime)}</Badge>
       <Slider
         value={[progress]}

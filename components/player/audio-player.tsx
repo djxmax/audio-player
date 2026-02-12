@@ -12,6 +12,7 @@ import {
   usePlayerVolume,
   usePlayerActions,
 } from "@/store/player-store";
+import MobileDrawer from "../drawer/mobile/mobile-drawer";
 
 interface AudioPlayerProps {
   track: Track | undefined;
@@ -21,7 +22,13 @@ export default function AudioPlayer({ track }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isPlaying = usePlayerIsPlaying();
   const volume = usePlayerVolume();
-  const { setVolume, setIsPlaying, setCurrentPosition } = usePlayerActions();
+  const {
+    setVolume,
+    setIsPlaying,
+    setCurrentPosition,
+    setCurrentTime,
+    setDuration,
+  } = usePlayerActions();
 
   // État local pour le progress (ne cause pas de re-rendus du store)
   const [progress, setProgress] = useState(0);
@@ -44,6 +51,8 @@ export default function AudioPlayer({ track }: AudioPlayerProps) {
       const current =
         (audioRef.current.currentTime / audioRef.current.duration) * 100;
       setProgress(current);
+      setCurrentTime(audioRef.current.currentTime);
+      setDuration(audioRef.current.duration);
       // Sauvegarder la position tous les 5 secondes seulement
       if (Math.floor(audioRef.current.currentTime) % 5 === 0) {
         setCurrentPosition(audioRef.current.currentTime);
@@ -69,38 +78,43 @@ export default function AudioPlayer({ track }: AudioPlayerProps) {
         onTimeUpdate={handleTimeUpdate}
         onEnded={() => console.log("Musique terminée")}
       />
-
-      <CardContent className="p-2 md:p-6">
-        <div className="flex flex-row items-center gap-4">
-          <div className="flex-1 md:flex-1/4">
-            <TrackInfo track={track} />
-          </div>
-          <div className="flex-none md:flex-1/2 flex flex-col items-center gap-4">
-            <ProgressBar
-              progress={progress}
-              currentTime={audioRef.current?.currentTime}
-              duration={audioRef.current?.duration}
-              handleSliderChange={handleSliderChange}
-            />
-            <Controls
-              isPlaying={isPlaying}
-              haveTrack={!!track}
-              onTogglePlay={() => setIsPlaying(!isPlaying)}
-            />
-          </div>
-          <div className="hidden md:flex md:flex-1/4 md:justify-end">
-            <SecondaryControls
-              volume={volume}
-              onVolumeChange={(value) => {
-                setVolume(value[0]);
-                if (audioRef.current) {
-                  audioRef.current.volume = value[0] / 100;
-                }
-              }}
-            />
-          </div>
-        </div>
-      </CardContent>
+      <MobileDrawer
+        trigger={
+          <CardContent className="p-2 md:p-6">
+            <div className="flex flex-row items-center gap-4">
+              <div className="flex-1 md:flex-1/4">
+                <TrackInfo track={track} />
+              </div>
+              <div className="flex-none md:flex-1/2 flex flex-col items-center gap-4">
+                <ProgressBar
+                  progress={progress}
+                  currentTime={audioRef.current?.currentTime}
+                  duration={audioRef.current?.duration}
+                  handleSliderChange={handleSliderChange}
+                  className="hidden md:flex"
+                />
+                <Controls
+                  isPlaying={isPlaying}
+                  haveTrack={!!track}
+                  onTogglePlay={() => setIsPlaying(!isPlaying)}
+                  previousClassName="hidden md:block"
+                />
+              </div>
+              <div className="hidden md:flex md:flex-1/4 md:justify-end">
+                <SecondaryControls
+                  volume={volume}
+                  onVolumeChange={(value) => {
+                    setVolume(value[0]);
+                    if (audioRef.current) {
+                      audioRef.current.volume = value[0] / 100;
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          </CardContent>
+        }
+      />
     </Card>
   );
 }

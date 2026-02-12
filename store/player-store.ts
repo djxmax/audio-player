@@ -8,6 +8,8 @@ interface PlayerState {
   isPlaying: boolean;
   volume: number;
   currentPosition: number;
+  currentTime: number;
+  duration: number;
   playlistTracks: Track[];
   currentTrackIndex: number;
 
@@ -15,6 +17,8 @@ interface PlayerState {
   setIsPlaying: (playing: boolean) => void;
   setVolume: (volume: number) => void;
   setCurrentPosition: (position: number) => void;
+  setCurrentTime: (time: number) => void;
+  setDuration: (duration: number) => void;
   togglePlay: () => void;
   setPlaylistTracks: (tracks: Track[]) => void;
   setCurrentTrackFromPlaylist: (track: Track, tracks: Track[]) => void;
@@ -29,6 +33,8 @@ export const usePlayerStore = create<PlayerState>()(
       isPlaying: false,
       volume: 80,
       currentPosition: 0,
+      currentTime: 0,
+      duration: 0,
       playlistTracks: [],
       currentTrackIndex: -1,
 
@@ -37,6 +43,8 @@ export const usePlayerStore = create<PlayerState>()(
       setIsPlaying: (playing) => set({ isPlaying: playing }),
       setVolume: (volume) => set({ volume }),
       setCurrentPosition: (position) => set({ currentPosition: position }),
+      setCurrentTime: (time) => set({ currentTime: time }),
+      setDuration: (duration) => set({ duration }),
       togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
       setPlaylistTracks: (tracks) => set({ playlistTracks: tracks }),
       setCurrentTrackFromPlaylist: (track, tracks) => {
@@ -91,6 +99,12 @@ export const usePlayerTrack = () =>
 export const usePlayerIsPlaying = () =>
   usePlayerStore((state) => state.isPlaying);
 export const usePlayerVolume = () => usePlayerStore((state) => state.volume);
+export const usePlayerPosition = () =>
+  usePlayerStore((state) => state.currentPosition);
+export const usePlayerCurrentTime = () =>
+  usePlayerStore((state) => state.currentTime);
+export const usePlayerDuration = () =>
+  usePlayerStore((state) => state.duration);
 export const usePlayerActions = () =>
   usePlayerStore(
     useShallow((state) => ({
@@ -98,6 +112,8 @@ export const usePlayerActions = () =>
       setIsPlaying: state.setIsPlaying,
       setVolume: state.setVolume,
       setCurrentPosition: state.setCurrentPosition,
+      setCurrentTime: state.setCurrentTime,
+      setDuration: state.setDuration,
       togglePlay: state.togglePlay,
     })),
   );
