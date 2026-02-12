@@ -13,6 +13,7 @@ import {
   usePlayerActions,
 } from "@/store/player-store";
 import MobileDrawer from "../drawer/mobile/mobile-drawer";
+import { Slider } from "../ui/slider";
 
 interface AudioPlayerProps {
   track: Track | undefined;
@@ -80,37 +81,46 @@ export default function AudioPlayer({ track }: AudioPlayerProps) {
       />
       <MobileDrawer
         trigger={
-          <CardContent className="p-2 md:p-6">
-            <div className="flex flex-row items-center gap-4">
-              <div className="flex-1 md:flex-1/4">
-                <TrackInfo track={track} />
+          <CardContent className="p-0">
+            <div className="w-full h-full flex flex-col">
+              <div className="p-2 md:p-6 flex flex-row items-center gap-4">
+                <div className="flex-1 md:flex-1/4">
+                  <TrackInfo track={track} />
+                </div>
+                <div className="flex-none md:flex-1/2 flex flex-col items-center gap-4">
+                  <ProgressBar
+                    progress={progress}
+                    currentTime={audioRef.current?.currentTime}
+                    duration={audioRef.current?.duration}
+                    handleSliderChange={handleSliderChange}
+                    className="hidden md:flex"
+                  />
+                  <Controls
+                    isPlaying={isPlaying}
+                    haveTrack={!!track}
+                    onTogglePlay={() => setIsPlaying(!isPlaying)}
+                    previousClassName="hidden md:block"
+                  />
+                </div>
+                <div className="hidden md:flex md:flex-1/4 md:justify-end">
+                  <SecondaryControls
+                    volume={volume}
+                    onVolumeChange={(value) => {
+                      setVolume(value[0]);
+                      if (audioRef.current) {
+                        audioRef.current.volume = value[0] / 100;
+                      }
+                    }}
+                  />
+                </div>
               </div>
-              <div className="flex-none md:flex-1/2 flex flex-col items-center gap-4">
-                <ProgressBar
-                  progress={progress}
-                  currentTime={audioRef.current?.currentTime}
-                  duration={audioRef.current?.duration}
-                  handleSliderChange={handleSliderChange}
-                  className="hidden md:flex"
-                />
-                <Controls
-                  isPlaying={isPlaying}
-                  haveTrack={!!track}
-                  onTogglePlay={() => setIsPlaying(!isPlaying)}
-                  previousClassName="hidden md:block"
-                />
-              </div>
-              <div className="hidden md:flex md:flex-1/4 md:justify-end">
-                <SecondaryControls
-                  volume={volume}
-                  onVolumeChange={(value) => {
-                    setVolume(value[0]);
-                    if (audioRef.current) {
-                      audioRef.current.volume = value[0] / 100;
-                    }
-                  }}
-                />
-              </div>
+              <Slider
+                value={[progress]}
+                max={100}
+                step={0.1}
+                className="w-full md:hidden [&_[role='slider']]:hidden"
+                onValueChange={handleSliderChange}
+              />
             </div>
           </CardContent>
         }

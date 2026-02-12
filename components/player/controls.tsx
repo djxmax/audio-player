@@ -33,13 +33,19 @@ export default function Controls({
         size="icon"
         className={previousClassName}
         disabled={!canPlayPrevious}
-        onClick={playPreviousTrack}
+        onClick={(e) => {
+          e.stopPropagation();
+          playPreviousTrack();
+        }}
       >
         <SkipBack />
       </Button>
 
       <Button
-        onClick={onTogglePlay}
+        onClick={(e) => {
+          e.stopPropagation();
+          onTogglePlay();
+        }}
         size="lg"
         className="rounded-full w-14 h-14"
         disabled={!haveTrack}
@@ -51,7 +57,10 @@ export default function Controls({
         variant="ghost"
         size="icon"
         disabled={!canPlayNext}
-        onClick={playNextTrack}
+        onClick={(e) => {
+          e.stopPropagation();
+          playNextTrack();
+        }}
       >
         <SkipForward />
       </Button>
